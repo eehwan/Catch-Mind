@@ -1,0 +1,20 @@
+{
+  "name": "catch-mind",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/eehwan/Catch-Mind.git",
+  "license": "MIT",
+  "dependencies": {
+    "@babel/core": "^7.12.10",
+    "@babel/node": "^7.12.10",
+    "@babel/preset-env": "^7.12.11",
+    "express": "^4.17.1",
+    "nodemon": "^2.0.7",
+    "path": "^0.12.7",
+    "pug": "^3.0.0",
+    "socket.io": "^3.1.0"
+  },
+  "scripts": {
+    "dev:server": "nodemon --exec babel-node src/server.js"
+  }
+}
