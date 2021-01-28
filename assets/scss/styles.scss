@@ -1,0 +1,11 @@
+@keyframes forTest {
+    from {
+        color: red;
+    } to {
+        color: blue;
+    }
+}
+
+$myColor: red;
+
+body{background-color: $myColor;}
