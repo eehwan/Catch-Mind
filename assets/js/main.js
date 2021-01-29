@@ -1,3 +1,25 @@
+const body = document.querySelector("body");
+const nickname = sessionStorage.getItem("nickname");
+const jsLogin = document.querySelector("#jsLogin");
+const nicknameInput = document.querySelector("#jsNicknameInput");
+
+const LOGGED_IN = "loggedIn";
+const LOGGED_OUT = "loggedOut";
+
+if (nickname == null) {
+  body.className = LOGGED_OUT;
+}else {
+  body.className = LOGGED_IN;
+}
+
+const handleSubmit = (e) => {
+  e.preventDefault();
+  sessionStorage.setItem("nickname", nicknameInput.value);
+  nicknameInput.value = "";
+}
+jsLogin.addEventListener("submit", handleSubmit);
+
+
 const socket = io("/");
 
 function sendMessage(message) {

@@ -4,17 +4,18 @@ import autoprefixer from "gulp-autoprefixer";
 import minifyCSS from "gulp-csso";
 import del from "del";
 import bro from "gulp-browserify";
+import babelify from "babelify";
 
 const paths = {
   styles: {
     src: "assets/scss/styles.scss",
     dest: "src/static",
-    watch: "assets/scss/**/*.scss"
+    watch: "assets/scss/*.scss"
   },
   js: {
     src: "assets/js/main.js",
     dest: "src/static",
-    watch:"assets/js/**/*.js"
+    watch:"assets/js/*.js"
   }
 };
 
@@ -25,7 +26,7 @@ const styles = () =>
     .pipe(sass())
     .pipe(
       autoprefixer({
-        browsers: ["last 2 versions", "safari 7", "IE 10"],
+        overrideBrowserslist: ["last 2 versions", "safari 7", "IE 10"],
         castcade: false
       })
     )
@@ -35,7 +36,12 @@ const styles = () =>
 const js = () =>
       gulp
         .src(paths.js.src)
-        .pipe(bro())
+        .pipe(bro({
+          transform: [
+            babelify.configure({
+              presets:["@babel/preset-env"]
+            })
+          ]}))
         .pipe(gulp.dest(paths.js.dest))
 
 const watchFiles = () => {
