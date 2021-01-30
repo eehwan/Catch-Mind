@@ -11,7 +11,7 @@ const jsLogin = document.querySelector("#jsLogin");
 const login = nickname => {
     const socket = io("/");
     socket.emit(window.events.setNickname, { nickname });
-    console.log(`Nickname changed to "${nickname}"`);
+    console.log(`Hello, ${nickname}`);
     initSockets(socket);
 }
 
@@ -32,6 +32,5 @@ if (nickname == null) {
     }
 }else {
     body.className = LOGGED_IN;
-    login(nickname)
 }
   
