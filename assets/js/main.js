@@ -15,7 +15,7 @@ if (nickname == null) {
 const handleSubmit = (e) => {
   e.preventDefault();
   const nicknameInput = document.querySelector("#jsNicknameInput");
-  sessionStorage.setItem(NICKNAME);
+  sessionStorage.setItem(NICKNAME, nicknameInput);
   nicknameInput.value = "";
 }
 if (jsLogin) {
