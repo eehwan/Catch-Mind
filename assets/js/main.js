@@ -1,10 +1,10 @@
-const body = document.querySelector("body");
-const nickname = sessionStorage.getItem("nickname");
-const jsLogin = document.querySelector("#jsLogin");
-const nicknameInput = document.querySelector("#jsNicknameInput");
-
+const NICKNAME = "nickname";
 const LOGGED_IN = "loggedIn";
 const LOGGED_OUT = "loggedOut";
+
+const body = document.querySelector("body");
+const nickname = sessionStorage.getItem(NICKNAME);
+const jsLogin = document.querySelector("#jsLogin");
 
 if (nickname == null) {
   body.className = LOGGED_OUT;
@@ -14,10 +14,13 @@ if (nickname == null) {
 
 const handleSubmit = (e) => {
   e.preventDefault();
-  sessionStorage.setItem("nickname", nicknameInput.value);
+  const nicknameInput = document.querySelector("#jsNicknameInput");
+  sessionStorage.setItem(NICKNAME);
   nicknameInput.value = "";
 }
-jsLogin.addEventListener("submit", handleSubmit);
+if (jsLogin) {
+  jsLogin.addEventListener("submit", handleSubmit);
+}
 
 
 const socket = io("/");
