@@ -10,7 +10,7 @@ const socketController = socket => {
         socket.broadcast.emit(events.messageAnnounce, { message, nickname: socket.nickname || socket.id });
     });
     socket.on(events.disconnect, () => {
-        socket.broadcast.emit(events.systemAnnounce, { message: `"${socket.nickname}" just leaved !!` });
+        socket.broadcast.emit(events.systemAnnounce, { message: `"${socket.nickname}" left !!` });
     })
 };
 
