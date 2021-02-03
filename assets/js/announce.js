@@ -1,15 +1,18 @@
+const body = document.querySelector("body");
 const announces = document.querySelector("#jsAnnounce");
-const systemAnnounces = document.querySelector(".systemAnnounces");
+
 export function handleSystemAnnounce({ message }) {
     const systemAnnounce = document.createElement("div");
     systemAnnounce.innerText = message;
-    systemAnnounces.appendChild(systemAnnounce);
+    systemAnnounce.className = "systemAnnounce";
+    body.appendChild(systemAnnounce);
     console.log(`<< System >>\n${message}`);
 }
 export function handleMessageAnnounce(data) {
     const { message, nickname } = data;
     const announce = document.createElement("div");
     announce.innerText = `${nickname}: ${message}`;
+    announce.className = "announce";
     announce.style.color = "#000000";
     announces.appendChild(announce);
 }

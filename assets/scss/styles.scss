@@ -1,6 +1,7 @@
 @import "reset";
 @import "variables";
 @import url("https://fonts.googleapis.com/css?family=Lato:400,700");
+@import "systemAnnounce";
 
 * {
     box-sizing: border-box;
@@ -32,18 +33,6 @@ body {
     &.loggedIn {
         .gameContainer {
             display: block;
-        }
-    }
-    &.systemAnnounces {
-        z-index: -100;
-        last-child {
-            background: #E19B96;
-            position: fixed;
-            left: 10px;
-            bottom: 10px;
-            border-radius: 10%;
-            display: block;
-            z-index: 10;
         }
     }
 }
