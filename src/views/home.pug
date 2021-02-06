@@ -11,8 +11,10 @@ html(lang="en")
                 input#jsNicknameInput(placeholder="Set your nickname", type="text")
         .gameContainer#jsGame
             .title Catch Mind
-            form#jsMessage(action="")
-                input#jsMessageInput(placeholder="Send message to others", type="text")
+            .chat
+                ul.chatMessages
+                form#chatForm(action="")
+                    input#chatInput(placeholder="Send message to others", type="text")
         script(src="/socket.io/socket.io.js")
         script(src="/main.js")
         script.
