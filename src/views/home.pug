@@ -8,13 +8,13 @@ html(lang="en")
     body
         .loginBox
             form#jsLogin(action="")
-                input#jsNicknameInput(placeholder="Set your nickname", type="text")
+                input#jsNicknameInput(placeholder="Set your nickname", type="text", maxlength="8")
         .gameContainer#jsGame
             .title Catch Mind
             .chat
                 ul.chatMessages
                 form#chatForm(action="")
-                    input#chatInput(placeholder="Send message to others", type="text")
+                    input#chatInput(placeholder="Send message to others", type="text", autocomplete="off")
         script(src="/socket.io/socket.io.js")
         script(src="/main.js")
         script.
