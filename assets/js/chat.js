@@ -2,8 +2,8 @@ const chatMessages = document.querySelector(".chatMessages");
 const chatForm = document.querySelector("#chatForm");
 
 const appendMessage = (text, nickname) => {
-    const li = document.createElement(li);
-    li.className(nickname? "other" : "self");
+    const li = document.createElement("li");
+    li.className = nickname? "other" : "self";
     li.innerHTML = `${nickname ? nickname : "You"} : ${text}`;
     chatMessages.appendChild(li);
 }

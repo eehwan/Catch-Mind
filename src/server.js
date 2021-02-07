@@ -8,7 +8,10 @@ import events from "./events";
 const PORT = 5006
 const app = express();
 
-const handleListening = () => console.log(`✔ Listening on PORT: ${PORT}`);
+const handleListening = () => {
+    const today = new Date();
+    console.log(`✔ Listening on PORT: ${PORT} // ${today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds()}`);
+}
 
 app.set("view engine", "pug");
 app.set("views", path.join(__dirname, "views"));
