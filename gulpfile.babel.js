@@ -10,12 +10,12 @@ const paths = {
   styles: {
     src: "assets/scss/styles.scss",
     dest: "src/static",
-    watch: "assets/scss/*.scss"
+    watch: "assets/scss/**/*.scss"
   },
   js: {
     src: "assets/js/main.js",
     dest: "src/static",
-    watch:"assets/js/*.js"
+    watch:"assets/js/**/*.js"
   }
 };
 
@@ -36,19 +36,24 @@ const styles = () =>
 const js = () =>
       gulp
         .src(paths.js.src)
-        .pipe(bro({
-          transform: [
-            babelify.configure({
-              presets:["@babel/preset-env"]
-            })
-          ]}))
+        .pipe(
+          bro({
+            transform: [
+              babelify.configure({
+                presets:["@babel/preset-env"]
+              })
+            ]
+          })
+        )
         .pipe(gulp.dest(paths.js.dest))
 
 const watchFiles = () => {
   gulp.watch(paths.styles.watch, styles);
-  gulp.watch(paths.js.watch);
+  gulp.watch(paths.js.watch, js);
 }
 
 const dev = gulp.series(clean, styles, js, watchFiles)
+
+const build = gulp.series(clean, styles, js);
 
 export default dev;
