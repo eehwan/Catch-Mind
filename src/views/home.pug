@@ -5,6 +5,8 @@ html(lang="en")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         title Catch Mind
         link(rel="stylesheet", href="/styles.css")
+        script(defer src="/main.js")
+        script(defer src="/socket.io/socket.io.js")
     body
         .loginBox
             form#jsLogin(action="")
@@ -15,7 +17,5 @@ html(lang="en")
                 ul.chatMessages
                 form#chatForm(action="")
                     input#chatInput(placeholder="Send message to others", type="text", autocomplete="off")
-        script(src="/socket.io/socket.io.js")
-        script(src="/main.js")
         script.
             window.events = !{events}
