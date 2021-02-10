@@ -1,14 +1,14 @@
 @keyframes announce {
     0% {
-        transform: translateY(80px);
+        transform: translateY(10vh);
         opacity: 0;
     }
     50% {
-      transform: translateY(-90px);
+      transform: translateY(-10vh);
       opacity: 1;
     }
     100% {
-      transform: translateY(-70px);
+      transform: translateY(-8vh);
       opacity: 1;
     }
 }
@@ -21,18 +21,18 @@
     }
   }
 .systemAnnounce {
-    background-color: #E19B96;
     position: fixed;
+    opacity: 0;
     font-size: 1.5em;
     padding: 0.3em 0.8em;
     color: #ffffff;
     font-weight: 600;
     left: 5vw;
-    bottom: 2.5vh;
+    bottom: 0;
     border-radius: 10%;
     display: block;
     z-index: 10;
-    animation: announce 0.5s ease-out forwards,
-        dissapear 0.5s ease-in forwards;
-    animation-delay: 0.5s, 1s;
+    animation: announce 1s ease-in forwards,
+        dissapear 0.5s ease-out forwards;
+    animation-delay: 0s, 2.5s;
 }

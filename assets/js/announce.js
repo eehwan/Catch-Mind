@@ -1,25 +1,18 @@
 const body = document.querySelector("body");
 const announces = document.querySelector("#jsAnnounce");
+const chatMessages = document.querySelector(".chatMessages");
 
-export function handleSystemAnnounce({ message }) {
+export function handleSystemAnnounce({ message, color }) {
     const systemAnnounce = document.createElement("div");
     systemAnnounce.innerText = message;
     systemAnnounce.className = "systemAnnounce";
+    systemAnnounce.style.backgroundColor = color;
     body.appendChild(systemAnnounce);
-    console.log(`<< System >>\n${message}`);
 }
 export function handleMessageAnnounce(data) {
     const { message, nickname } = data;
-    const announce = document.createElement("div");
-    announce.innerText = `${nickname}: ${message}`;
-    announce.className = "announce";
-    announce.style.color = "#000000";
-    announces.appendChild(announce);
-}
-export function sendMessage(message) {
-    window.socket.emit(window.events.newMessage, { message });
-    const announce = document.createElement("div");
-    announce.innerText = `You: ${message}`;
-    announce.style.color = "#353535";
-    announces.appendChild(announce);
+    const li = document.createElement("li");
+    li.className = nickname? "other" : "self";
+    li.innerHTML = `${nickname ? nickname : "You"} : ${message}`;
+    chatMessages.appendChild(li);
 }

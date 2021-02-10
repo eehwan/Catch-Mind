@@ -1,12 +1,14 @@
-import { handleSystemAnnounce, handleMessageAnnounce, sendMessage } from "./announce";
+import { handleSystemAnnounce, handleMessageAnnounce } from "./announce";
 
 let socket = null;
 
-export const getSocket = () => window.socket;
+export const getSocket = () => socket;
+
+export const updateSocket = (aSocket) => socket = aSocket;
 
 export const initSockets = (aSocket) => {
     const { events } = window;
-    socket = aSocket;
-    socket.on(events.systemAnnounce, handleSystemAnnounce);
-    socket.on(events.messageAnnounce, handleMessageAnnounce);
+    updateSocket(aSocket);
+    aSocket.on(events.systemAnnounce, handleSystemAnnounce);
+    aSocket.on(events.messageAnnounce, handleMessageAnnounce);
 }

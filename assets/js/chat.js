@@ -1,3 +1,5 @@
+import { getSocket } from "./sockets";
+
 const chatMessages = document.querySelector(".chatMessages");
 const chatForm = document.querySelector("#chatForm");
 
@@ -12,7 +14,8 @@ const handleChatSubmit = (e) => {
     e.preventDefault();
     const chatInput = document.querySelector("#chatInput");
     appendMessage(chatInput.value);
-    chatInput.value = ""
+    getSocket().emit(window.events.sendMessage, { message: chatInput.value });
+    chatInput.value = "";
 }
 
 if (chatForm) {
