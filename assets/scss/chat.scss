@@ -27,7 +27,7 @@
     box-shadow: 0 3px 36px rgba(23, 55, 87, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07);
     scrollbar-width: none;
     li {
-      padding-bottom: 0.2em;
+      padding: 0.1em 0;
       max-width: 100%;
       color: #2c2c2c;
       .self {
@@ -39,6 +39,11 @@
       .text {
         word-wrap: break-word;
       }
+    }
+    .systemMessage {
+      color: rgb(225, 25, 25);
+      font-weight: bolder;
+      padding: 0.2em 0 0.2em 1.5em;
     }
   }
   #chatForm {
