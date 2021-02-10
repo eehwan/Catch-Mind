@@ -1,8 +1,7 @@
 const events = {
     systemAnnounce: "systemAnnounce",
     messageAnnounce: "messageAnnounce",
-    disconnect: "disconnect",
-    reconnecting: "reconnecting",
+    left: "left",
     reconnection: "reconnection",
 
     setNickname: "setNickname",
