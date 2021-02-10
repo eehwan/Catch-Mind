@@ -12,8 +12,6 @@ export function handleSystemAnnounce({ message, color }) {
     const li = document.createElement("li");
     li.innerText = message;
     li.className = "systemMessage";
-    // li.style.color = "rgb(225, 25, 25)";
-    // li.style.fontWeight = "bolder";
     chatMessages.appendChild(li);
 }
 export function handleMessageAnnounce(data) {
