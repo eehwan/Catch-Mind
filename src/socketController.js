@@ -11,7 +11,9 @@ const socketController = socket => {
     });
     // logout
     socket.on("disconnect", () => {
-        socket.broadcast.emit(events.systemAnnounce, { message: `"${socket.nickname}" left !!`, color: "rgb(255, 149, 0)"});
+        if (socket.nickname) {
+            socket.broadcast.emit(events.systemAnnounce, { message: `"${socket.nickname}" left !!`, color: "rgb(255, 149, 0)"});
+        }
     });
     socket.on(events.left, () => {
         socket.broadcast.emit(events.systemAnnounce, { message: `"${socket.nickname}" left !!`, color: "rgb(255, 149, 0)"});

@@ -18,21 +18,30 @@
     }
     to {
       opacity: 0;
+      display: none;
     }
   }
-.systemAnnounce {
-    position: fixed;
-    opacity: 0;
-    font-size: 1.5em;
-    padding: 0.3em 0.8em;
-    color: #ffffff;
-    font-weight: 600;
-    left: 5vw;
-    bottom: 0;
-    border-radius: 10%;
-    display: block;
-    z-index: 10;
-    animation: announce 1s ease-in forwards,
-        dissapear 0.5s ease-out forwards;
-    animation-delay: 0s, 2.5s;
+.systemAnnounces {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  max-height: 85vh;
+  left: 5vw;
+  bottom: 0;
+  div {
+      opacity: 0;
+      font-size: 1.5em;
+      padding: 0.3em 0.8em;
+      margin-top: 1em;
+      color: #ffffff;
+      font-weight: 600;
+      border-radius: 10%;
+      display: block;
+      z-index: 10;
+      animation: announce 1s ease-in forwards,
+          dissapear 0.5s ease-out forwards;
+      animation-delay: 0s, 1.5s;
+  }
 }

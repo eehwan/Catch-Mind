@@ -8,15 +8,16 @@ html(lang="en")
         script(defer src="/socket.io/socket.io.js")
         script(defer src="/main.js")
     body
+        .title Catch Mind
         .loginBox
             form#jsLogin(action="")
-                input#jsNicknameInput(placeholder="Set your nickname", type="text", maxlength="8")
+                input#jsNicknameInput(placeholder="Set your nickname", type="text", maxlength="15")
         .gameContainer#jsGame
-            .title Catch Mind
             .chat
                 ul.chatMessages
                 form#chatForm(action="")
                     input#chatInput(placeholder="Send message to others", type="text", autocomplete="off")
-                .logoutBtn(abbr="logout") X
+                button#logoutBtn(abbr="logout") X
+            .systemAnnounces
         script.
             window.events = !{events}
