@@ -14,7 +14,11 @@
     cursor: pointer;
   }    
   .chatMessages {
+    &::-webkit-scrollbar {
+      display: none;
+    }
     width: 100%;
+    overflow: auto;
     padding: 20px 10px;
     background-color: #ffffff;
     height: 50vh;
