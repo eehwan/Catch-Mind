@@ -1,4 +1,3 @@
-const _html = document.querySelector("html");
 const _canvas = document.querySelector("canvas");
 const _line_width = document.querySelector("#line_width");
 const _colors = document.getElementsByClassName("color");
@@ -106,7 +105,7 @@ function init(){
   );
   _custom_color.addEventListener('input', e => handle_color(e.target.value));
   // 그리기
-  _html.addEventListener("mousemove", handle_mouseMove);
+  canvas.addEventListener("mousemove", handle_mouseMove);
   canvas.addEventListener("mousedown", start_paint);
   canvas.addEventListener("mouseup", stop_paint);
   canvas.addEventListener("click", fill);
