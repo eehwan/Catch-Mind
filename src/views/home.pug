@@ -13,11 +13,34 @@ html(lang="en")
             form#jsLogin(action="")
                 input#jsNicknameInput(placeholder="Set your nickname", type="text", maxlength="15")
         .gameContainer#jsGame
-            .chat
-                ul.chatMessages
-                form#chatForm(action="")
-                    input#chatInput(placeholder="Send message to others", type="text", autocomplete="off")
-                #logoutBtn(abbr="logout") X
+            .wrapper
+                .drawingContainer
+                    canvas#canvas Can't load. Use Chrome.exe plz
+                    .side
+                        .controls
+                            select#mode(name="Mode")
+                                option(value="draw") draw
+                                option(value="fill") fill
+                                option(value="clear") clear
+                            input#line_width(type="range", min="0.3", max="15", value="3", step="0.3")
+                        .colors
+                            <input type="color" id="custom_color">
+                            <div class="color" style="background-color: #000000"></div>
+                            <div class="color" style="background-color: #ffffff"></div>
+                            <div class="color" style="background-color: #ff0000"></div>
+                            <div class="color" style="background-color: #ff8000"></div>
+                            <div class="color" style="background-color: #ffff00"></div>
+                            <div class="color" style="background-color: #00ff00"></div>
+                            <div class="color" style="background-color: #00bfff"></div>
+                            <div class="color" style="background-color: #0000ff"></div>
+                            <div class="color" style="background-color: #8000ff"></div>
+                .chatContainer
+                    .usersInfo
+                    .chat
+                        ul.chatMessages
+                        form#chatForm(action="")
+                            input#chatInput(placeholder="Send message to others", type="text", autocomplete="off")
+                        #logoutBtn(abbr="logout") X
             .systemAnnounces
         script.
             window.events = !{events}
