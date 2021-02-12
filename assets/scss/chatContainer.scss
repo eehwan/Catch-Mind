@@ -1,29 +1,26 @@
 .chatContainer {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
   
-  .userInfo {
-    border: 1px solid $black;
+  .usersInfo {
+    height: 15vh;
+    width: 240px;
+    background-color: white;
+    border: 1px solid rgba(23, 55, 87, 0.4);
+    border-radius: 0.6em;
+    margin-bottom: 3em;
   }
   .chat {
-    position: relative;
-    width: 15vw;
-    min-width: 250px;
-    #logoutBtn {
-      position: absolute;
-      border-radius: 15%;
-      border: 1px solid rgba(65, 65, 65, 0.6);
-      color:rgb(0, 0, 0);
-      background-color: $greyColor;
-      padding: 0 0.2em;
-      top: 2px;
-      right: 5px;
-      cursor: pointer;
-    }    
+    width: 240px;
+    margin: 0.5em;
     .chatMessages {
       &::-webkit-scrollbar {
         display: none;
       }
+      scrollbar-width: none;
       width: 100%;
       overflow: auto;
       padding: 20px 10px;
@@ -32,13 +29,12 @@
       min-height: 450px;
       border-radius: 10px;
       box-shadow: 0 3px 36px rgba(23, 55, 87, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07);
-      scrollbar-width: none;
       li {
         padding: 0.1em 0;
         max-width: 100%;
-        color: #2c2c2c;
+        color: #000000;
         .self {
-          color: #000000;
+          color: #3c3c3cd0;
         }
         .others {
           color: #0085ff;
