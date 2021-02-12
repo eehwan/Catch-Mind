@@ -4,7 +4,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin: 1em 2em;
+    margin: calc(2vh + 1.2rem) 2em 1em 2em;
     z-index: 5;
 
     canvas {

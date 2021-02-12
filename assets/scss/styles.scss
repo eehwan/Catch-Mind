@@ -21,7 +21,6 @@ body {
         Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
     display: flex;
     min-width: 100%;
-    min-height: 100%;
     .title {
         position: fixed;
         left: 5vw;
@@ -37,7 +36,6 @@ body {
         .gameContainer {
             display: flex;
             justify-content: space-around;
-            width: 100%;
             .wrapper {
                 min-width: 1000px;
                 display: flex;
@@ -45,14 +43,15 @@ body {
                 align-items: center;
                 justify-content: space-around;
                 #logoutBtn {
+                    all: unset;
                     position: fixed;
                     border-radius: 15%;
                     border: 1px solid rgba(65, 65, 65, 0.6);
                     color:rgb(0, 0, 0);
                     background-color: $greyColor;
                     padding: 0 0.2em;
-                    top: 2px;
-                    right: 5px;
+                    top: 0.5em;
+                    right: 0.5em;
                     cursor: pointer;
                   }    
               

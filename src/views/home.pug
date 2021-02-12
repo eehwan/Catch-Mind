@@ -16,6 +16,8 @@ html(lang="en")
             .wrapper
                 .drawingContainer
                     canvas#canvas Can't load. Use Chrome.exe plz
+                    input#canvasWidth(type="hidden", value= "600")
+                    input#canvasHeight(type="hidden", value= "600")
                     .side
                         .controls
                             select#mode(name="Mode")
@@ -40,7 +42,7 @@ html(lang="en")
                         ul.chatMessages
                         form#chatForm(action="")
                             input#chatInput(placeholder="Send message to others", type="text", autocomplete="off")
-                    #logoutBtn(abbr="logout") X
+                    abbr#logoutBtn(title="LOG OUT") X
             .systemAnnounces
         script.
             window.events = !{events}
