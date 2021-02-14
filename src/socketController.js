@@ -1,17 +1,17 @@
 import events from "./events";
 
-let sockets = [];
+let players = [];
 const socketController = (socket, io) => {
     // login    
     socket.on(events.setNickname, ({ nickname }) => {
-        while (sockets.map(socket=>socket.nickname).includes(nickname)) {
+        while (players.map(socket=>socket.nickname).includes(nickname)) {
             nickname = nickname + "!";
         }
         socket.nickname = nickname;
         socket.broadcast.emit(events.systemAnnounce, { message: `"${socket.nickname}" joined !!`, color: "rgb(0, 122, 255)"});
 
-        sockets.push({ id: socket.id, nickname: socket.nickname });
-        io.emit(events.updateSockets, { sockets });
+        players.push({ id: socket.id, nickname: socket.nickname, score: 0 });
+        io.emit(events.updatePlyers, { players });
     });
     socket.on(events.sendMessage, ({ message }) => {
         socket.broadcast.emit(events.messageAnnounce, { message, nickname: socket.nickname || socket.id });
@@ -21,8 +21,8 @@ const socketController = (socket, io) => {
         if (socket.nickname) {
             socket.broadcast.emit(events.systemAnnounce, { message: `"${socket.nickname}"  left !!!`, color: "rgb(255, 149, 0)"});
 
-            sockets = sockets.filter(aSocket => aSocket.id !== socket.id);
-            io.emit(events.updateSockets, { sockets });
+            players = players.filter(aSocket => aSocket.id !== socket.id);
+            io.emit(events.updatePlyers, { players });
         }
     });
     socket.on(events.left, () => {

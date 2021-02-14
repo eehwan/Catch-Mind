@@ -13,7 +13,7 @@ const events = {
     fill: "fill",
     clear: "clear",
 
-    updateSockets: "updateSockets",
+    updatePlyers: "updatePlyers",
 };
 
 export default events;
