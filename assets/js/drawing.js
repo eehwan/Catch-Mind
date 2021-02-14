@@ -38,7 +38,7 @@ const rgb2hex = rgb => {
     return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
   }
 }
-const handle_color = color => {
+export const handleColor = color => {
   _custom_color.value = rgb2hex(color);
   ctx.strokeStyle = color;
   ctx.fillStyle = color;
@@ -60,11 +60,11 @@ const handle_mouseMove = e => {
         _y = e.offsetY;
   draw(_x,_y);
 }
-const beforePaint = (_x, _y) => {
+export const beforePaint = (_x, _y) => {
   ctx.beginPath();
   ctx.moveTo(_x, _y);
 };
-const beginPaint = (_x, _y) => {
+export const beginPaint = (_x, _y) => {
   ctx.lineTo(_x, _y);
   ctx.stroke();
 }
@@ -79,7 +79,7 @@ const draw = (x, y) => {
     }
   }
 }
-const handleFill = () => {
+export const handleFill = () => {
   ctx.fillRect(0,0, _canvas.width, _canvas.height);
   
   filling = false;
@@ -91,7 +91,7 @@ const fill = () => {
     aSocket.emit(window.events.fill);
   }
 };
-const handleClear = () => {
+export const handleClear = () => {
   ctx.clearRect(0, 0, _canvas.width, _canvas.height);
   filling = false;
   _mode.value= "draw";
@@ -117,12 +117,12 @@ const init = () => {
   // 색상
   Array.from(_colors).forEach(x => x.addEventListener('click', e => {
     const color = e.target.style.backgroundColor;
-    handle_color(color);
+    handleColor(color);
     aSocket.emit(window.events.changeColor, {color});
   }));
   _custom_color.addEventListener('input', e => {
     const color = e.target.value;
-    handle_color(color);
+    handleColor(color);
     aSocket.emit(window.events.changeColor, {color});
   });
   // 그리기
@@ -134,9 +134,3 @@ const init = () => {
   _mode.addEventListener('change', handle_mode);
 }
 init();
-
-aSocket.on(window.events.beforePaint, ({ x, y }) => beforePaint(x, y));
-aSocket.on(window.events.beginPaint, ({ x, y }) => beginPaint(x, y));
-aSocket.on(window.events.changeColor, ({ color }) => handle_color(color));
-aSocket.on(window.events.fill, handleFill);
-aSocket.on(window.events.clear, handleClear);
