@@ -19,9 +19,21 @@ const socketController = socket => {
         socket.broadcast.emit(events.systemAnnounce, { message: `"${socket.nickname}" left !!!`, color: "rgb(255, 149, 0)"});
     });
     // reconnection due to lags
-    socket.on(events.reconnection, ()=> {
+    socket.on(events.reconnection, () => {
         socket.broadcast.emit(events.systemAnnounce, { message: `"${socket.nickname}" reconnected !`, color: "rgb(0, 122, 255)"});
     });
+    // drawing
+    socket.on(events.beforePaint, ({ x, y }) => {
+        socket.broadcast.emit(events.beforePaint, { x, y });
+    });
+    socket.on(events.beginPaint, ({ x, y }) => {
+        socket.broadcast.emit(events.beginPaint, { x, y });
+    });
+    socket.on(events.changeColor, ({ color }) => {
+        socket.broadcast.emit(events.changeColor, { color });
+    });
+    socket.on(events.fill, () => socket.broadcast.emit(events.fill));
+    socket.on(events.clear, () => socket.broadcast.emit(events.clear));
 };
 
 export default socketController;

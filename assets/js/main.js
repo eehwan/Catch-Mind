@@ -1,4 +1,4 @@
 import "./login";
 import "./sockets";
 import "./chat";
-import "./app";
+import "./drawing";

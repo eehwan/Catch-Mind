@@ -6,6 +6,12 @@ const events = {
 
     setNickname: "setNickname",
     sendMessage: "sendMessage",
+    
+    beforePaint: "beforePaint",
+    beginPaint: "beginPaint",
+    changeColor: "changeColor",
+    fill: "fill",
+    clear: "clear",
 };
 
 export default events;

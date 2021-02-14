@@ -7,8 +7,7 @@ export const getSocket = () => socket;
 export const updateSocket = (aSocket) => socket = aSocket;
 
 export const initSockets = (aSocket) => {
-    const { events } = window;
     updateSocket(aSocket);
-    aSocket.on(events.systemAnnounce, handleSystemAnnounce);
-    aSocket.on(events.messageAnnounce, handleMessageAnnounce);
+    aSocket.on(window.events.systemAnnounce, handleSystemAnnounce);
+    aSocket.on(window.events.messageAnnounce, handleMessageAnnounce);
 }

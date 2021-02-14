@@ -1,12 +1,13 @@
+import { getSocket } from "./sockets";
+const aSocket = getSocket();
+
 const _canvas = document.querySelector("canvas");
 const _line_width = document.querySelector("#line_width");
 const _colors = document.getElementsByClassName("color");
 const _custom_color = document.querySelector("#custom_color");
 const _mode = document.querySelector("#mode");
-const _save = document.querySelector("#save");
 
 const ctx = _canvas.getContext('2d');
-
 
 // 펜 설정 초기화
 // ctx.strokeStyle = _custom_color.value;
@@ -24,13 +25,9 @@ _canvas.height = _input_height.value;
 ctx.fillStyle = "#ffffff";
 ctx.fillRect(0,0, _canvas.width, _canvas.height);
 ctx.fillStyle = _custom_color.value; //흰색배경을 만들고 색상 초기화
-function handle_color(color){
-  _custom_color.value = rgb2hex(color); //input color value에는 hex값만 들어감
-  ctx.strokeStyle = color;
-  ctx.fillStyle = color;
-}
-// hex코드로 변환
-function rgb2hex(rgb) {
+
+// hex코드로 변환 (input::type=value 에는 hex값만 들어갈 수 있음)
+const rgb2hex = rgb => {
   if (rgb.search("rgb") == -1) {
     return rgb;
   } else {
@@ -41,69 +38,93 @@ function rgb2hex(rgb) {
     return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
   }
 }
+const handle_color = color => {
+  _custom_color.value = rgb2hex(color);
+  ctx.strokeStyle = color;
+  ctx.fillStyle = color;
+}
 
 // 그림그리기 관련
 let painting = false;
 let filling = false;
-function start_paint() {
+const start_paint = () => {
   painting = true;
 }
-function stop_paint() {
+const stop_paint = () => {
   painting = false;
   ctx.closePath();
 }
 
-function handle_mouseMove(e) {
+const handle_mouseMove = e => {
   const _x = e.offsetX,
         _y = e.offsetY;
   draw(_x,_y);
 }
-function draw(_x, _y){
+const beforePaint = (_x, _y) => {
+  ctx.beginPath();
+  ctx.moveTo(_x, _y);
+};
+const beginPaint = (_x, _y) => {
+  ctx.lineTo(_x, _y);
+  ctx.stroke();
+}
+const draw = (x, y) => {
   if(!filling) {
     if (!painting) {
-      ctx.beginPath();
-      ctx.moveTo(_x, _y);
+      beforePaint(x, y);
+      aSocket.emit(window.events.beforePaint, {x, y});
     } else {
-      console.log(_x, _y);
-      ctx.lineTo(_x, _y);
-      ctx.stroke();
+      beginPaint(x, y)
+      aSocket.emit(window.events.beginPaint, {x, y});
     }
   }
 }
-function fill() {
+const handleFill = () => {
+  ctx.fillRect(0,0, _canvas.width, _canvas.height);
+  
+  filling = false;
+  _mode.value = 'draw';
+};
+const fill = () => {
   if(filling){
-    ctx.fillRect(0,0, _canvas.width, _canvas.height);
-
-    filling = false;
-    _mode.value = 'draw';
+    handleFill();
+    aSocket.emit(window.events.fill);
   }
-}
-
+};
+const handleClear = () => {
+  ctx.clearRect(0, 0, _canvas.width, _canvas.height);
+  filling = false;
+  _mode.value= "draw";
+};
 // 버튼 관련
-function handle_mode(){
-  if (_mode.value == 'draw'){
+const handle_mode = () => {
+  if (_mode.value == 'draw') {
     // _canvas.style.cursor=
     filling = false;
-  }else if(_mode.value == 'fill'){
+  }else if(_mode.value == 'fill') {
     // _canvas.style.cursor=
     filling = true;
-  }else{
-    ctx.clearRect(0, 0, _canvas.width, _canvas.height);
-    _mode.value= "draw";
+  }else {
+    handleClear();
+    aSocket.emit(window.events.clear);
   }
 }
 
-function init(){
+const init = () => {
   // 선 굵기
   ctx.lineWidth=_line_width.value
   _line_width.addEventListener('input', () => ctx.lineWidth = _line_width.value);
   // 색상
-  Array.from(_colors).forEach(x =>
-    x.addEventListener('click', e =>
-      handle_color(e.target.style.backgroundColor)
-    )
-  );
-  _custom_color.addEventListener('input', e => handle_color(e.target.value));
+  Array.from(_colors).forEach(x => x.addEventListener('click', e => {
+    const color = e.target.style.backgroundColor;
+    handle_color(color);
+    aSocket.emit(window.events.changeColor, {color});
+  }));
+  _custom_color.addEventListener('input', e => {
+    const color = e.target.value;
+    handle_color(color);
+    aSocket.emit(window.events.changeColor, {color});
+  });
   // 그리기
   canvas.addEventListener("mousemove", handle_mouseMove);
   canvas.addEventListener("mousedown", start_paint);
@@ -113,3 +134,9 @@ function init(){
   _mode.addEventListener('change', handle_mode);
 }
 init();
+
+aSocket.on(window.events.beforePaint, ({ x, y }) => beforePaint(x, y));
+aSocket.on(window.events.beginPaint, ({ x, y }) => beginPaint(x, y));
+aSocket.on(window.events.changeColor, ({ color }) => handle_color(color));
+aSocket.on(window.events.fill, handleFill);
+aSocket.on(window.events.clear, handleClear);
