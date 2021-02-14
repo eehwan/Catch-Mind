@@ -1,10 +1,17 @@
 import events from "./events";
 
-const socketController = socket => {
+let sockets = [];
+const socketController = (socket, io) => {
     // login    
     socket.on(events.setNickname, ({ nickname }) => {
+        while (sockets.map(socket=>socket.nickname).includes(nickname)) {
+            nickname = nickname + "!";
+        }
         socket.nickname = nickname;
         socket.broadcast.emit(events.systemAnnounce, { message: `"${socket.nickname}" joined !!`, color: "rgb(0, 122, 255)"});
+
+        sockets.push({ id: socket.id, nickname: socket.nickname });
+        io.emit(events.updateSockets, { sockets });
     });
     socket.on(events.sendMessage, ({ message }) => {
         socket.broadcast.emit(events.messageAnnounce, { message, nickname: socket.nickname || socket.id });
@@ -13,6 +20,9 @@ const socketController = socket => {
     socket.on("disconnect", () => {
         if (socket.nickname) {
             socket.broadcast.emit(events.systemAnnounce, { message: `"${socket.nickname}"  left !!!`, color: "rgb(255, 149, 0)"});
+
+            sockets = sockets.filter(aSocket => aSocket.id !== socket.id);
+            io.emit(events.updateSockets, { sockets });
         }
     });
     socket.on(events.left, () => {

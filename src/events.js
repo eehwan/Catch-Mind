@@ -12,6 +12,8 @@ const events = {
     changeColor: "changeColor",
     fill: "fill",
     clear: "clear",
+
+    updateSockets: "updateSockets",
 };
 
 export default events;

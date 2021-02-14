@@ -23,4 +23,4 @@ app.get("/", (req, res) => res.render("home", { events: JSON.stringify(events) }
 const server = app.listen(PORT, handleListening);
 
 const io = socketIO(server);
-io.on("connection", socket => socketController(socket));
+io.on("connection", socket => socketController(socket, io));
