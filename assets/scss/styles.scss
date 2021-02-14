@@ -21,6 +21,7 @@ body {
         Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
     display: flex;
     min-width: 100%;
+    min-height: 100%;
     .title {
         position: fixed;
         left: 5vw;
@@ -59,8 +60,10 @@ body {
         }
     }
     &.loggedOut {
+        align-items: center;
+        justify-content: space-around;
         .loginBox {
-            display: block;
+            display: flex;
         }
         input {
             height: 50px;
