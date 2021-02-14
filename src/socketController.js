@@ -5,7 +5,7 @@ const socketController = (socket, io) => {
     // login    
     socket.on(events.setNickname, ({ nickname }) => {
         while (players.map(socket=>socket.nickname).includes(nickname)) {
-            nickname = nickname + "!";
+            nickname = nickname + "@";
         }
         socket.nickname = nickname;
         socket.broadcast.emit(events.systemAnnounce, { message: `"${socket.nickname}" joined !!`, color: "rgb(0, 122, 255)"});
@@ -27,6 +27,9 @@ const socketController = (socket, io) => {
     });
     socket.on(events.left, () => {
         socket.broadcast.emit(events.systemAnnounce, { message: `"${socket.nickname}" left !!!`, color: "rgb(255, 149, 0)"});
+
+        players = players.filter(aSocket => aSocket.id !== socket.id);
+        io.emit(events.updatePlyers, { players });
     });
     // reconnection due to lags
     socket.on(events.reconnection, () => {
@@ -36,13 +39,10 @@ const socketController = (socket, io) => {
     socket.on(events.beforePaint, ({ x, y }) => {
         socket.broadcast.emit(events.beforePaint, { x, y });
     });
-    socket.on(events.beginPaint, ({ x, y }) => {
-        socket.broadcast.emit(events.beginPaint, { x, y });
+    socket.on(events.beginPaint, ({ x, y, color, lineWidth }) => {
+        socket.broadcast.emit(events.beginPaint, { x, y, color, lineWidth });
     });
-    socket.on(events.changeColor, ({ color }) => {
-        socket.broadcast.emit(events.changeColor, { color });
-    });
-    socket.on(events.fill, () => socket.broadcast.emit(events.fill));
+    socket.on(events.fill, ({ color }) => socket.broadcast.emit(events.fill, { color }));
     socket.on(events.clear, () => socket.broadcast.emit(events.clear));
 };
 

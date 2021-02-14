@@ -1,5 +1,4 @@
 export const handlePlayers = (players) => {
-    console.log(players);
     let usersInfo = document.querySelector(".usersInfo");
     usersInfo.remove();
     const chatContainer = document.querySelector(".chatContainer");
@@ -10,10 +9,13 @@ export const handlePlayers = (players) => {
     switch(players.length) {
         case 0:
             usersCnt.innerText = `No one, here !!`;
+            break;
         case 1:
             usersCnt.innerText = `You are alone !!`;
+            break;
         default:
             usersCnt.innerText = `${players.length} Users, here !!`;
+            break;
     };
     usersInfo.appendChild(usersCnt);
 

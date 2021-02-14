@@ -43,7 +43,10 @@ export const handleColor = color => {
   ctx.strokeStyle = color;
   ctx.fillStyle = color;
 }
-
+// 선 굵기
+const handleLineWidth = (x) => {
+  ctx.lineWidth = x;
+};
 // 그림그리기 관련
 let painting = false;
 let filling = false;
@@ -64,31 +67,45 @@ export const beforePaint = (_x, _y) => {
   ctx.beginPath();
   ctx.moveTo(_x, _y);
 };
-export const beginPaint = (_x, _y) => {
+export const beginPaint = (_x, _y, color = null, lineWidth = null) => {
+  let currentColor = ctx.strokeStyle;
+  let currentLineWidth = ctx.lineWidth;
+  if (color) {
+    ctx.strokeStyle = color;
+  }
+  if (lineWidth) {
+    ctx.lineWidth = lineWidth;
+  }
   ctx.lineTo(_x, _y);
   ctx.stroke();
+  ctx.strokeStyle = currentColor;
+  ctx.lineWidth = currentLineWidth;
 }
 const draw = (x, y) => {
   if(!filling) {
     if (!painting) {
       beforePaint(x, y);
-      aSocket.emit(window.events.beforePaint, {x, y});
+      aSocket.emit(window.events.beforePaint, { x, y });
     } else {
       beginPaint(x, y)
-      aSocket.emit(window.events.beginPaint, {x, y});
+      aSocket.emit(window.events.beginPaint, { x, y, color: ctx.strokeStyle, lineWidth: ctx.lineWidth });
     }
   }
 }
-export const handleFill = () => {
+export const handleFill = (color = null) => {
+  let currentColor = ctx.fillStyle;
+  if (color) {
+    ctx.fillStyle = color;
+  }
   ctx.fillRect(0,0, _canvas.width, _canvas.height);
-  
-  filling = false;
-  _mode.value = 'draw';
+  ctx.fillStyle = currentColor;
 };
 const fill = () => {
   if(filling){
     handleFill();
-    aSocket.emit(window.events.fill);
+    filling = false;
+    _mode.value = 'draw';
+    aSocket.emit(window.events.fill, { color: ctx.fillStyle });
   }
 };
 export const handleClear = () => {
@@ -113,7 +130,11 @@ const handle_mode = () => {
 const init = () => {
   // 선 굵기
   ctx.lineWidth=_line_width.value
-  _line_width.addEventListener('input', () => ctx.lineWidth = _line_width.value);
+  _line_width.addEventListener('input', (e) => {
+    const lineWidth = e.target.value;
+    handleLineWidth(lineWidth);
+    aSocket.emit(window.events.lineWidth, { lineWidth });
+  });
   // 색상
   Array.from(_colors).forEach(x => x.addEventListener('click', e => {
     const color = e.target.style.backgroundColor;
@@ -136,7 +157,6 @@ const init = () => {
 init();
 
 aSocket.on(window.events.beforePaint, ({ x, y }) => beforePaint(x, y));
-aSocket.on(window.events.beginPaint, ({ x, y }) => beginPaint(x, y));
-aSocket.on(window.events.changeColor, ({ color }) => handleColor(color));
-aSocket.on(window.events.fill, handleFill);
+aSocket.on(window.events.beginPaint, ({ x, y, color, lineWidth }) => beginPaint(x, y, color, lineWidth));
+aSocket.on(window.events.fill, ({ color }) => handleFill(color));
 aSocket.on(window.events.clear, handleClear);

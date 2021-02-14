@@ -12,14 +12,19 @@
     border: 1px solid rgba(23, 55, 87, 0.4);
     border-radius: 0.6em;
     margin-bottom: 3em;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    scrollbar-width: none;
+    overflow: auto;
     .userCnt {
       font-size: 1.2em;
       font-weight: bolder;
-      padding: 0.2em;
+      padding: 0.4em 0 0.4em 2em;
     }
     .user {
       position: relative;
-      margin: 0.1em 0.5em;
+      margin:  0  0 0.1em 0.5em;
       .nickname {
         color: #0085ff;
       }

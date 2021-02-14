@@ -9,7 +9,6 @@ const events = {
     
     beforePaint: "beforePaint",
     beginPaint: "beginPaint",
-    changeColor: "changeColor",
     fill: "fill",
     clear: "clear",
 
