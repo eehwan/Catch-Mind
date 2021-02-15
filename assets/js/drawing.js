@@ -1,5 +1,4 @@
 import { getSocket } from "./sockets";
-const aSocket = getSocket();
 
 const _canvas = document.querySelector("canvas");
 const _line_width = document.querySelector("#line_width");
@@ -38,7 +37,7 @@ const rgb2hex = rgb => {
     return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
   }
 }
-export const handleColor = color => {
+const handleColor = color => {
   _custom_color.value = rgb2hex(color);
   ctx.strokeStyle = color;
   ctx.fillStyle = color;
@@ -63,11 +62,11 @@ const handle_mouseMove = e => {
         _y = e.offsetY;
   draw(_x,_y);
 }
-export const beforePaint = (_x, _y) => {
+const beforePaint = (_x, _y) => {
   ctx.beginPath();
   ctx.moveTo(_x, _y);
 };
-export const beginPaint = (_x, _y, color = null, lineWidth = null) => {
+const beginPaint = (_x, _y, color = null, lineWidth = null) => {
   let currentColor = ctx.strokeStyle;
   let currentLineWidth = ctx.lineWidth;
   if (color) {
@@ -85,14 +84,14 @@ const draw = (x, y) => {
   if(!filling) {
     if (!painting) {
       beforePaint(x, y);
-      aSocket.emit(window.events.beforePaint, { x, y });
+      getSocket().emit(window.events.beforePaint, { x, y });
     } else {
       beginPaint(x, y)
-      aSocket.emit(window.events.beginPaint, { x, y, color: ctx.strokeStyle, lineWidth: ctx.lineWidth });
+      getSocket().emit(window.events.beginPaint, { x, y, color: ctx.strokeStyle, lineWidth: ctx.lineWidth });
     }
   }
 }
-export const handleFill = (color = null) => {
+const fill = (color = null) => {
   let currentColor = ctx.fillStyle;
   if (color) {
     ctx.fillStyle = color;
@@ -100,18 +99,16 @@ export const handleFill = (color = null) => {
   ctx.fillRect(0,0, _canvas.width, _canvas.height);
   ctx.fillStyle = currentColor;
 };
-const fill = () => {
+const fillCanvas = () => {
   if(filling){
-    handleFill();
+    fill();
     filling = false;
     _mode.value = 'draw';
-    aSocket.emit(window.events.fill, { color: ctx.fillStyle });
+    getSocket().emit(window.events.fill, { color: ctx.fillStyle });
   }
 };
-export const handleClear = () => {
+const clearCanvas = () => {
   ctx.clearRect(0, 0, _canvas.width, _canvas.height);
-  filling = false;
-  _mode.value= "draw";
 };
 // 버튼 관련
 const handle_mode = () => {
@@ -122,8 +119,10 @@ const handle_mode = () => {
     // _canvas.style.cursor=
     filling = true;
   }else {
-    handleClear();
-    aSocket.emit(window.events.clear);
+    clearCanvas();
+    filling = false;
+    _mode.value= "draw";
+    getSocket().emit(window.events.clear);
   }
 }
 
@@ -133,30 +132,30 @@ const init = () => {
   _line_width.addEventListener('input', (e) => {
     const lineWidth = e.target.value;
     handleLineWidth(lineWidth);
-    aSocket.emit(window.events.lineWidth, { lineWidth });
+    getSocket().emit(window.events.lineWidth, { lineWidth });
   });
   // 색상
   Array.from(_colors).forEach(x => x.addEventListener('click', e => {
     const color = e.target.style.backgroundColor;
     handleColor(color);
-    aSocket.emit(window.events.changeColor, {color});
+    getSocket().emit(window.events.changeColor, {color});
   }));
   _custom_color.addEventListener('input', e => {
     const color = e.target.value;
     handleColor(color);
-    aSocket.emit(window.events.changeColor, {color});
+    getSocket().emit(window.events.changeColor, {color});
   });
   // 그리기
   canvas.addEventListener("mousemove", handle_mouseMove);
   canvas.addEventListener("mousedown", start_paint);
   canvas.addEventListener("mouseup", stop_paint);
-  canvas.addEventListener("click", fill);
+  canvas.addEventListener("click", fillCanvas);
   // 버튼
   _mode.addEventListener('change', handle_mode);
 }
 init();
 
-aSocket.on(window.events.beforePaint, ({ x, y }) => beforePaint(x, y));
-aSocket.on(window.events.beginPaint, ({ x, y, color, lineWidth }) => beginPaint(x, y, color, lineWidth));
-aSocket.on(window.events.fill, ({ color }) => handleFill(color));
-aSocket.on(window.events.clear, handleClear);
+export const handleBeforePaint = ({ x, y }) => beforePaint(x, y);
+export const handleBeginPaint = ({ x, y, color, lineWidth }) => beginPaint(x, y, color, lineWidth);
+export const handleFill = ({ color }) => fill(color);
+export const handleClear = clearCanvas();;
