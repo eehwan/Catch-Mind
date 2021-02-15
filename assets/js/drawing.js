@@ -158,4 +158,4 @@ init();
 export const handleBeforePaint = ({ x, y }) => beforePaint(x, y);
 export const handleBeginPaint = ({ x, y, color, lineWidth }) => beginPaint(x, y, color, lineWidth);
 export const handleFill = ({ color }) => fill(color);
-export const handleClear = clearCanvas();;
+export const handleClear = () => clearCanvas();
