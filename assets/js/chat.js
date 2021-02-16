@@ -2,6 +2,7 @@ import { getSocket } from "./sockets";
 
 const chatMessages = document.querySelector(".chatMessages");
 const chatForm = document.querySelector("#chatForm");
+const chatInput = document.querySelector("#chatInput");
 
 export const appendMessage = (message, nickname) => {
     const author = document.createElement("span");
@@ -19,14 +20,18 @@ export const appendMessage = (message, nickname) => {
 
 const handleChatSubmit = (e) => {
     e.preventDefault();
-    const chatInput = document.querySelector("#chatInput");
     if (chatInput.value) {
         appendMessage(chatInput.value);
         getSocket().emit(window.events.sendMessage, { message: chatInput.value });
         chatInput.value = "";
     }
 }
-
-if (chatForm) {
+export const enableChat = () => {
+    chatInput.disabled = false;
     chatForm.addEventListener("submit", handleChatSubmit);
-}
+};
+export const disableChat = () => {
+    chatInput.disabled = true;
+    chatForm.removeEventListener("submit", handleChatSubmit);
+};
+enableChat();
