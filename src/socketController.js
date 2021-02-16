@@ -1,19 +1,59 @@
 import events from "./events";
+import { chooseWord } from "./words";
 
 let players = [];
+let onGame = false;
+let word = null;
+let painter = null;
+
 const socketController = (socket, io) => {
+    const sendUpdatePlayers = () => {
+        players.sort((player1, player2) => player2.score - player1.score);
+        io.emit(events.updatePlyers, { players });
+    };
+    const choosePainter = () => {
+        return players[Math.floor(Math.random() * (players.length - 1))]
+    };
+    const endGame= (winner, word) => {
+        onGame = false;
+        players.forEach(player => player.state = "waiting");
+        winner.score += 10;
+        io.emit(events.gameEnd, { winner, word });
+        sendUpdatePlayers();
+
+        console.log(winner, word)
+    }
+    const startGame = () => {
+        setTimeout(() => {
+            if (!onGame) {
+                onGame = true;
+                players.forEach(player => player.state = "onGame");
+                painter = choosePainter();
+                word = chooseWord();
+                io.emit(events.gameStart, { painter });
+                io.to(painter.id).emit(events.painter, { word });
+        
+                // setTimeout(() => endGame(painter, word), 10000);
+            }
+        }, 1000);
+    };
     // login    
     socket.on(events.setNickname, ({ nickname }) => {
         while (players.map(socket=>socket.nickname).includes(nickname)) {
             nickname = nickname + "@";
         }
         socket.nickname = nickname;
+        socket.state = "waiting";
         socket.broadcast.emit(events.systemAnnounce, { message: `"${socket.nickname}" joined !!`, color: "rgb(0, 122, 255)"});
 
         players.push({ id: socket.id, nickname: socket.nickname, score: 0 });
-        io.emit(events.updatePlyers, { players });
+        sendUpdatePlayers();
     });
     socket.on(events.sendMessage, ({ message }) => {
+        if (onGame && message == word) {
+            const winner = players.find(player => player.id == socket.id);
+            endGame(winner, word)
+        }
         socket.broadcast.emit(events.messageAnnounce, { message, nickname: socket.nickname || socket.id });
     });
     // logout
@@ -22,18 +62,23 @@ const socketController = (socket, io) => {
             socket.broadcast.emit(events.systemAnnounce, { message: `"${socket.nickname}"  left !!!`, color: "rgb(255, 149, 0)"});
 
             players = players.filter(aSocket => aSocket.id !== socket.id);
-            io.emit(events.updatePlyers, { players });
+            sendUpdatePlayers();
         }
     });
     socket.on(events.left, () => {
         socket.broadcast.emit(events.systemAnnounce, { message: `"${socket.nickname}" left !!!`, color: "rgb(255, 149, 0)"});
 
         players = players.filter(aSocket => aSocket.id !== socket.id);
-        io.emit(events.updatePlyers, { players });
+        sendUpdatePlayers();
     });
     // reconnection due to lags
     socket.on(events.reconnection, () => {
         socket.broadcast.emit(events.systemAnnounce, { message: `"${socket.nickname}" reconnected !`, color: "rgb(0, 122, 255)"});
+    });
+    // ready
+    socket.on(events.ready, () => {
+        players.find(player => player.id == socket.id).state = "ready";
+        if (players.length > 1 && players.every(player=> player.state == "ready")) startGame();
     });
     // drawing
     socket.on(events.beforePaint, ({ x, y }) => {

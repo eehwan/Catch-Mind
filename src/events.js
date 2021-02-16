@@ -13,6 +13,10 @@ const events = {
     clear: "clear",
 
     updatePlyers: "updatePlyers",
+    gameStart: "gameStart",
+    gameEnd: "gameEnd",
+    painter: "painter",
+    ready: "ready",
 };
 
 export default events;

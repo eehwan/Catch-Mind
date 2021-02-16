@@ -1,3 +1,4 @@
+import { handleClear } from "./drawing";
 import { getSocket, initSockets } from "./sockets";
 
 const NICKNAME = "nickname";
@@ -20,6 +21,11 @@ const login = nickname => {
     }
     getSocket().emit(window.events.setNickname, { nickname });
     document.getElementById("chatInput").focus();
+
+    // Canvas,채팅,알림 초기화
+    chatMessages.innerHTML = "";
+    systemAnnounces.innerHTML = "";
+    handleClear();
 }
 
 const handleSubmit = (e) => {
@@ -36,12 +42,9 @@ const handleSubmit = (e) => {
 const handleLogout = (e) => {
     e.preventDefault();
     localStorage.removeItem(NICKNAME);
-    chatMessages.innerHTML = "";
     body.className = LOGGED_OUT;
-    getSocket().emit(window.events.left);
-    chatMessages.innerHTML = "";
-    systemAnnounces.innerHTML = "";
     nicknameInput.focus();
+    getSocket().emit(window.events.left);
 }
 
 if (nickname == null) {

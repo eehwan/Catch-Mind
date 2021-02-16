@@ -5,6 +5,7 @@ const _line_width = document.querySelector("#line_width");
 const _colors = document.getElementsByClassName("color");
 const _custom_color = document.querySelector("#custom_color");
 const _mode = document.querySelector("#mode");
+const palete = document.querySelector("palete");
 
 const ctx = _canvas.getContext('2d');
 
@@ -126,6 +127,19 @@ const handle_mode = () => {
   }
 }
 
+// 그리기
+export const enable = () => {
+  canvas.addEventListener("mousemove", handle_mouseMove);
+  canvas.addEventListener("mousedown", start_paint);
+  canvas.addEventListener("mouseup", stop_paint);
+  canvas.addEventListener("click", fillCanvas);
+}
+export const disable = () => {
+  canvas.removeEventListener("mousemove", handle_mouseMove);
+  canvas.removeEventListener("mousedown", start_paint);
+  canvas.removeEventListener("mouseup", stop_paint);
+  canvas.removeEventListener("click", fillCanvas);
+}
 const init = () => {
   // 선 굵기
   ctx.lineWidth=_line_width.value
@@ -145,17 +159,14 @@ const init = () => {
     handleColor(color);
     getSocket().emit(window.events.changeColor, {color});
   });
-  // 그리기
-  canvas.addEventListener("mousemove", handle_mouseMove);
-  canvas.addEventListener("mousedown", start_paint);
-  canvas.addEventListener("mouseup", stop_paint);
-  canvas.addEventListener("click", fillCanvas);
   // 버튼
   _mode.addEventListener('change', handle_mode);
 }
 init();
 
+// Painter 따라그리기
 export const handleBeforePaint = ({ x, y }) => beforePaint(x, y);
 export const handleBeginPaint = ({ x, y, color, lineWidth }) => beginPaint(x, y, color, lineWidth);
 export const handleFill = ({ color }) => fill(color);
 export const handleClear = () => clearCanvas();
+// Painter or Guesser

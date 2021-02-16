@@ -1,4 +1,4 @@
-export const handlePlayers = (players) => {
+export const handlePlayers = ({ players }) => {
     let usersInfo = document.querySelector(".usersInfo");
     usersInfo.remove();
     const chatContainer = document.querySelector(".chatContainer");

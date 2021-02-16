@@ -1,15 +1,15 @@
 import { handleSystemAnnounce, handleMessageAnnounce } from "./announce";
 import { handleBeforePaint, handleBeginPaint, handleClear, handleFill } from "./drawing";
-import { handlePlayers } from "./players";
+import { handleGameEnd, handleGameStart, handlePainter } from "./game";
+import { handlePlayers } from "./usersInfo";
 
 let socket = null;
 
 export const getSocket = () => socket;
 
-export const updateSocket = (aSocket) => socket = aSocket;
+// export const updateSocket = (aSocket) => socket = aSocket;
 
 export const initSockets = (aSocket) => {
-    updateSocket(aSocket);
     socket = aSocket;
     socket.on(window.events.systemAnnounce, handleSystemAnnounce);
     socket.on(window.events.messageAnnounce, handleMessageAnnounce);
@@ -19,6 +19,8 @@ export const initSockets = (aSocket) => {
     socket.on(window.events.fill, handleFill);
     socket.on(window.events.clear, handleClear);
 
-    socket.on(window.events.updatePlyers, ({ players }) => handlePlayers(players));
-    socket.on(window.events.gameStart, ({ painter, word }) => console.log(`${painter} : ${word}`));
+    socket.on(window.events.updatePlyers, handlePlayers);
+    socket.on(window.events.gameStart, handleGameStart);
+    socket.on(window.events.gameEnd, handleGameEnd);
+    socket.on(window.events.painter, handlePainter);
 }

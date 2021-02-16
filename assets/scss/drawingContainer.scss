@@ -11,15 +11,31 @@
       background-color: rgb(255, 255, 255);
       border-radius: 0.6em;
       box-shadow: 0 0.25em 0.375em rgba(50, 50, 93, 0.11), 0 0.0625em 0.1875em rgba(0, 0, 0, 0.08);
-      height: 600px;
-      width: 600px;
       margin: 1em;
     }
-    .side{
+    palete {
       display: flex;
       flex-direction: column;
       align-items: center;
-
+      #waiting {
+        all: unset;
+        display: block;
+        font-size: 2.5em;
+        font-weight: 800;
+        border-radius: 0.2em;
+        padding: 0.3em;
+        background-color: blanchedalmond;
+        box-shadow: 0 0.25em 0.375em rgba(50, 50, 93, 0.11), 0.01em 0.0625em 0.1875em rgba(0, 0, 0, 0.25);
+        cursor: pointer;
+        &:active {
+          transform: translate(0.01em, 0.0625em);
+        }
+      }
+      #guesser {
+        display: block;
+        font-weight: 800;
+        font-size: 2.2em;
+      }
       .controls {
         display: flex;
         flex-direction: row;
@@ -41,31 +57,60 @@
           width: 50%;
         }
       }
-      .colors{
-        display:flex;
+      .colors {
+        display: flex;
         flex-direction: row;
-      
-          #custom_color{
-              all: unset;
-              width: 3.2em;
-              height: 3.2em;
-              margin: 0.05em;
-              border: 1px solid rgba(50, 50, 93, 0.35);
-              border-radius: 50%;
-              box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
-              cursor: pointer;
-          }
-          .color{
-              width: 3.5em;
-              height: 3.5em;
-              margin: 0.08em;
-              border-radius: 50%;
-              box-shadow: 0 0.25em 0.375em rgba(50, 50, 93, 0.11), 0 0.0625em 0.1875em rgba(0, 0, 0, 0.08);
-              cursor: pointer;
-              &:active{
-                transform: scale(0.95);
-              }
-          }
+        #custom_color{
+          all: unset;
+          width: 3.2em;
+          height: 3.2em;
+          margin: 0.05em;
+          border: 1px solid rgba(50, 50, 93, 0.35);
+          border-radius: 50%;
+          box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+          cursor: pointer;
+        }
+        .color{
+            width: 3.5em;
+            height: 3.5em;
+            margin: 0.08em;
+            border-radius: 50%;
+            box-shadow: 0 0.25em 0.375em rgba(50, 50, 93, 0.11), 0 0.0625em 0.1875em rgba(0, 0, 0, 0.08);
+            cursor: pointer;
+            &:active{
+              transform: scale(0.95);
+            }
+        }
+      }
+
+      &.waiting {
+        #waiting {
+          display: block;
+        }
+        #guesser, .controls, .colors {
+          display: none;
+        }
+      }
+      &.painter {
+        #waiting, #guesser {
+          display: none;
+        }
+        .controls {
+          display: flex;
+          flex-direction: row;
+        }
+        .colors{
+          display:flex;
+          flex-direction: row;
+        }
+      }
+      &.guesser {
+        #guesser {
+          display: block;
+        }
+        #waiting, .controls, .colors {
+          display: none;
+        }
       }
     }
 }
