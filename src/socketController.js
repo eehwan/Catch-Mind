@@ -22,7 +22,7 @@ const socketController = (socket, io) => {
                 players.forEach(player => player.score += 5);
                 painter.score -= 10;
                 break
-            case(null):     // painter가 중도에 나갈시 발생
+            case("left"):     // painter가 중도에 나갈시 발생
                 break
             default:
                 winner.score += 10;
@@ -73,10 +73,12 @@ const socketController = (socket, io) => {
 
             players = players.filter(aSocket => aSocket.id !== socket.id);
             sendUpdatePlayers();
-            // 게임 강제 중지
-            console.log(socket.id, painter)
-            if (onGame===true && painter.id == socket.id) {
-                endGame(painter, null, word);
+            // 게임 강제 중지 & 자동 시작
+            if (onGame===true && (painter.id == socket.id || players.length < 2)) {
+                endGame(painter, "left", word);
+            }
+            if (players.length > 1 && players.every(player=> player.state == "ready")){
+                setTimeout(() => startGame(), 1000);
             }
         }
     });
@@ -85,10 +87,13 @@ const socketController = (socket, io) => {
 
         players = players.filter(aSocket => aSocket.id !== socket.id);
         sendUpdatePlayers();
-        // 게임 강제 중지
+        // 게임 강제 중지 & 자동 시작
         console.log(socket.id, painter)
-        if (onGame===true && painter.id == socket.id) {
-            endGame(painter, null, word);
+        if (onGame===true && (painter.id == socket.id || players.length < 2)) {
+            endGame(painter, "left", word);
+        }
+        if (players.length > 1 && players.every(player=> player.state == "ready")){
+            setTimeout(() => startGame(), 1000);
         }
     });
     // reconnection due to lags

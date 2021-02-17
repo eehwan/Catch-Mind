@@ -1,18 +1,15 @@
 const chatMessages = document.querySelector(".chatMessages");
 const systemAnnounces = document.querySelector(".systemAnnounces");
-const body = document.querySelector("body");
-let gameAnnounce = document.querySelector(".gameAnnounce");
+const gameContainer = document.querySelector(".gameContainer");
 import { appendMessage } from "./chat";
 
 export function handleGameAnnounce({ message, color }) {
-    if (gameAnnounce) {
-        body.removeChild(gameAnnounce);
-    }
     const div = document.createElement("div");
     div.className = "gameAnnounce";
     div.innerHTML = message;
     div.style.backgroundColor = color;
-    body.appendChild(div);
+    gameContainer.appendChild(div);
+    setTimeout(() => gameContainer.removeChild(div), 5000);
 
     const li = document.createElement("li");
     li.innerHTML = message;
@@ -26,7 +23,7 @@ export function handleSystemAnnounce({ message, color }) {
     div.innerHTML = message;
     div.style.backgroundColor = color;
     systemAnnounces.appendChild(div);
-    setTimeout(() => div.style.display = "none", 3000);
+    setTimeout(() => systemAnnounces.removeChild(div), 3000);
 
     const li = document.createElement("li");
     li.innerHTML = message;

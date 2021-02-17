@@ -25,8 +25,8 @@ export const handleGameEnd = ({ painter, winner, word }) => {
     enableChat();
     let text = null;
     switch(winner) {
-        case(null):
-            text = `Painter has left!<br><br>Word was < ${word} >`;
+        case("left"):
+            text = `Player has left!<br><br>Word was < ${word} >`;
             break
         case("no one"):
             text = `No one got the right answer! <br><br> Word was < ${word} > <br><br> ${painter.nickname} -5 points <br>other players +5 points`;
