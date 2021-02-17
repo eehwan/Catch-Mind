@@ -38,7 +38,9 @@ export const handleGameEnd = ({ painter, winner, word }) => {
 };
 
 export const handlePainter =  ({ word }) => {
+    handleClear();
     enable();
+    
     palete.className = "painter";
     disableChat();
 

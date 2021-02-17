@@ -16,6 +16,7 @@ export function handleSystemAnnounce({ message, color, center = false }) {
     li.innerHTML = message;
     li.className = "systemMessage";
     chatMessages.appendChild(li);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 export function handleMessageAnnounce(data) {
     const { message, nickname } = data;
