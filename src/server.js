@@ -3,9 +3,11 @@ import path from "path";
 import socketIO from "socket.io";
 import morgan from "morgan";
 import socketController from "./socketController";
+import dotenv from "dotenv";
 import events from "./events";
+dotenv.config();
 
-const PORT = 5006
+const PORT = process.env.PORT;
 const app = express();
 
 const handleListening = () => {

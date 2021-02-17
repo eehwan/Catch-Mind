@@ -5,11 +5,13 @@
   "repository": "https://github.com/eehwan/Catch-Mind.git",
   "license": "MIT",
   "dependencies": {
+    "@babel/cli": "^7.12.16",
     "@babel/core": "^7.12.10",
     "@babel/node": "^7.12.10",
     "@babel/preset-env": "^7.12.11",
     "babelify": "^10.0.0",
     "del": "^6.0.0",
+    "dotenv": "^8.2.0",
     "eslint": "^7.18.0",
     "eslint-plugin-prettier": "^3.3.1",
     "express": "^4.17.1",
@@ -28,6 +30,14 @@
   },
   "scripts": {
     "dev:server": "nodemon --exec babel-node src/server.js --ignore assets/ --ignore src/static",
-    "dev:assets": "gulp"
+    "dev:assets": "gulp dev",
+    "dev": "yarn dev:assets && yarn dev:server",
+    "prebuild": "rm -rf build",
+    "build": "yarn build:assets && yarn build:server && yarn copyAll",
+    "build:assets": "gulp build",
+    "build:server": "babel src --out-dir build --ignore 'src/assets','src/static'",
+    "copyAll": "cp -R src/static build && cp -R src/views build",
+    "prestart": "yarn build",
+    "start": "node build/server.js"
   }
 }
