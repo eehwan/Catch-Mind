@@ -1,16 +1,32 @@
 const chatMessages = document.querySelector(".chatMessages");
 const systemAnnounces = document.querySelector(".systemAnnounces");
+const body = document.querySelector("body");
+let gameAnnounce = document.querySelector(".gameAnnounce");
 import { appendMessage } from "./chat";
 
-export function handleSystemAnnounce({ message, color, center = false }) {
+export function handleGameAnnounce({ message, color }) {
+    if (gameAnnounce) {
+        body.removeChild(gameAnnounce);
+    }
+    const div = document.createElement("div");
+    div.className = "gameAnnounce";
+    div.innerHTML = message;
+    div.style.backgroundColor = color;
+    body.appendChild(div);
+
+    const li = document.createElement("li");
+    li.innerHTML = message;
+    li.className = "gameAnnounce";
+    chatMessages.appendChild(li);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+export function handleSystemAnnounce({ message, color }) {
     const div = document.createElement("div");
     div.innerHTML = message;
     div.style.backgroundColor = color;
-    if(center) {
-        div.className = "center"
-    }
     systemAnnounces.appendChild(div);
-    setTimeout(() => div.style.display = "none", 5000);
+    setTimeout(() => div.style.display = "none", 3000);
 
     const li = document.createElement("li");
     li.innerHTML = message;

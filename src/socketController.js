@@ -100,7 +100,10 @@ const socketController = (socket, io) => {
         players.find(player => player.id == socket.id).state = "ready";
         
         console.log(`${JSON.stringify(players)}: ready`);
-        if (players.length > 1 && players.every(player=> player.state == "ready")) startGame();
+        if (players.length > 1 && players.every(player=> player.state == "ready")){
+            setTimeout(() => startGame(), 1000);
+        }
+            
     });
     // drawing
     socket.on(events.beforePaint, ({ x, y }) => {

@@ -41,19 +41,25 @@
     border-radius: 0.5em;
     text-align: center;
     z-index: 10;
-    &:not(.center){
-      animation: announce 1s ease-in forwards,
-        dissapear 0.5s ease-out forwards;
-      animation-delay: 0s, 1.5s;
-    }
-    &.center {
-      position: fixed;
-      opacity: 100;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      animation: dissapear 0.5s ease-out forwards;
-      animation-delay: 3s;
-    }
+    animation: announce 1s ease-in forwards,
+      dissapear 1s ease-out forwards;
+    animation-delay: 0s, 1.5s;
   }
+}
+
+body> .gameAnnounce {
+  position: fixed;
+  opacity: 100;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  font-size: 1.8em;
+  font-weight: 800;
+  padding: 0.3em 0.8em;
+  border-radius: 0.4em;
+  color: #ffffff;
+  animation: dissapear 1s ease-out forwards;
+  animation-delay: 3s;
+  z-index: 10;
 }

@@ -1,4 +1,4 @@
-import { handleSystemAnnounce } from "./announce";
+import { handleGameAnnounce, handleSystemAnnounce } from "./announce";
 import { disableChat, enableChat } from "./chat";
 import { handleClear, disable, enable } from "./drawing";
 import { getSocket } from "./sockets";
@@ -15,7 +15,7 @@ export const handleGameStart = ({painter}) => {
     palete.className = "guesser";
     
     const text = `Guess what he draws! <br><br>Painter: ${painter.nickname}`;
-    handleSystemAnnounce({ message: text, color: "#000000", center: true });
+    handleGameAnnounce({ message: text, color: "#000000"});
 };
 
 export const handleGameEnd = ({ painter, winner, word }) => {
@@ -26,32 +26,32 @@ export const handleGameEnd = ({ painter, winner, word }) => {
     let text = null;
     switch(winner) {
         case(null):
-            text = `Word: ${word}<br><br>Painter has left! `;
+            text = `Painter has left!<br><br>Word was < ${word} >`;
             break
         case("no one"):
-            text = `Word: ${word} <br><br> No one got the right answer! <br><br>${painter.nickname} -5 points <br>other players +5 points`;
+            text = `No one got the right answer! <br><br> Word was < ${word} > <br><br> ${painter.nickname} -5 points <br>other players +5 points`;
             break
         default:
-            text = `Winner: ${winner.nickname} <br> Word: ${word} <br><br>Game ended ! <br><br> ${painter.nickname} +5 points <br>${winner.nickname} +10 points`;
+            text = `Game Ended ! <br><br>Winner: ${winner.nickname} <br> Word was < ${word} > <br><br> ${painter.nickname} +5 points <br>${winner.nickname} +10 points`;
     }
-    handleSystemAnnounce({ message: text, color: "#000000", center: true });
+    handleGameAnnounce({ message: text, color: "#000000"});
 };
 
 export const handlePainter =  ({ word }) => {
     handleClear();
     enable();
-    
+
     palete.className = "painter";
     disableChat();
 
     const text = `Draw < ${word} > and let others guess.`;
-    handleSystemAnnounce({ message: text, color: "#000000", center: true });
+    handleGameAnnounce({ message: text, color: "#000000"});
 };
 const handleReady = () => {
     getSocket().emit(window.events.ready);
     waiting.removeEventListener("click", handleReady);
     
-    handleSystemAnnounce({ message: "Ready", color: "#000000", center: true });
+    handleGameAnnounce({ message: "Get set", color: "#000000"});
 }
 
 waiting.addEventListener("click", handleReady);
