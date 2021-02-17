@@ -22,6 +22,8 @@ body {
     display: flex;
     min-width: 100%;
     min-height: 100%;
+    align-items: center;
+    justify-content: center;
     .title {
         position: fixed;
         left: 5vw;

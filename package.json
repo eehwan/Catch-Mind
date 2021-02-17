@@ -31,7 +31,6 @@
   "scripts": {
     "dev:server": "nodemon --exec babel-node src/server.js --ignore assets/ --ignore src/static",
     "dev:assets": "gulp dev",
-    "dev": "yarn dev:assets && yarn dev:server",
     "prebuild": "rm -rf build",
     "build": "yarn build:assets && yarn build:server && yarn copyAll",
     "build:assets": "gulp build",
