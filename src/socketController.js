@@ -5,6 +5,7 @@ let players = [];
 let onGame = false;
 let word = null;
 let painter = null;
+let limitTime = null;
 
 const socketController = (socket, io) => {
     const sendUpdatePlayers = () => {
@@ -14,16 +15,24 @@ const socketController = (socket, io) => {
     const choosePainter = () => {
         return players[Math.floor(Math.random() * (players.length - 1))]
     };
-    const endGame= (winner, word) => {
-        if(winner) {
-            winner.score += 10;
+    const endGame= (painter, winner, word) => {
+        clearTimeout(limitTime);
+        switch(winner){
+            case("no one"): // 아무도 못 맞출시 painter는 총 -5점, 나머지는 +5점
+                players.forEach(player => player.score += 5);
+                painter.score -= 10;
+                break
+            case(null):     // painter가 중도에 나갈시 발생
+                break
+            default:
+                winner.score += 10;
+                painter.score += 5;
         }
-        io.emit(events.gameEnd, { winner, word });
-
+        io.emit(events.gameEnd, { painter, winner, word });
+        
+        onGame = false;
         players.forEach(player => player.state = "waiting");
         sendUpdatePlayers();
-
-        onGame = false;
     }
     const startGame = () => {
         if (!onGame) {
@@ -34,7 +43,7 @@ const socketController = (socket, io) => {
             io.emit(events.gameStart, { painter });
             io.to(painter.id).emit(events.painter, { word });
             
-            // setTimeout(() => endGame(painter, word), 10000);
+            limitTime = setTimeout(() => endGame(painter, "no one", word), 60000);
         }
         console.log(painter, word);
     };
@@ -51,9 +60,9 @@ const socketController = (socket, io) => {
         sendUpdatePlayers();
     });
     socket.on(events.sendMessage, ({ message }) => {
-        if (onGame && message == word) {
+        if (onGame && message.toLowerCase() == word) {
             const winner = players.find(player => player.id == socket.id);
-            endGame(winner, word)
+            endGame(painter, winner, word)
         }
         socket.broadcast.emit(events.messageAnnounce, { message, nickname: socket.nickname || socket.id });
     });
@@ -67,7 +76,7 @@ const socketController = (socket, io) => {
             // 게임 강제 중지
             console.log(socket.id, painter)
             if (onGame===true && painter.id == socket.id) {
-                endGame(null, word);
+                endGame(painter, null, word);
             }
         }
     });
@@ -79,7 +88,7 @@ const socketController = (socket, io) => {
         // 게임 강제 중지
         console.log(socket.id, painter)
         if (onGame===true && painter.id == socket.id) {
-            endGame(null, word);
+            endGame(painter, null, word);
         }
     });
     // reconnection due to lags
