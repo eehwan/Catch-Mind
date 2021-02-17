@@ -6,6 +6,10 @@ const palete = document.querySelector("palete");
 const waiting = document.querySelector("#waiting");
 
 export const handleGameStart = ({painter}) => {
+    if (painter.id == getSocket().id) {
+        return
+    }
+
     disable();
     handleClear();
     palete.className = "guesser";
