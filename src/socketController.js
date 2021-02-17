@@ -105,7 +105,7 @@ const socketController = (socket, io) => {
         players.find(player => player.id == socket.id).state = "ready";
         
         console.log(`${JSON.stringify(players)}: ready`);
-        if (players.length > 1 && players.every(player=> player.state == "ready")){
+        if (players.filter(player=> player.state == "ready").length > 1){
             setTimeout(() => startGame(), 1000);
         }
             

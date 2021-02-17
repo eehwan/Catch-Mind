@@ -4,7 +4,7 @@ import { getSocket, initSockets } from "./sockets";
 const NICKNAME = "nickname";
 const LOGGED_IN = "loggedIn";
 const LOGGED_OUT = "loggedOut";
-let nickname = localStorage.getItem(NICKNAME);
+let nickname = sessionStorage.getItem(NICKNAME);
 
 const body = document.querySelector("body");
 const jsLogin = document.querySelector("#jsLogin");
@@ -32,7 +32,7 @@ const handleSubmit = (e) => {
     e.preventDefault();
     if (nicknameInput.value) {
         nickname = nicknameInput.value;
-        localStorage.setItem(NICKNAME, nickname);
+        sessionStorage.setItem(NICKNAME, nickname);
         nicknameInput.value = "";
         body.className = LOGGED_IN;
         login(nickname);
@@ -41,7 +41,7 @@ const handleSubmit = (e) => {
 
 const handleLogout = (e) => {
     e.preventDefault();
-    localStorage.removeItem(NICKNAME);
+    sessionStorage.removeItem(NICKNAME);
     body.className = LOGGED_OUT;
     nicknameInput.focus();
     getSocket().emit(window.events.left);
