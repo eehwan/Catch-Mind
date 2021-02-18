@@ -18,6 +18,9 @@ Realtime Drawing Game built with SocketIO, Gulp, NodeJS
 	- Painter draw a picture of the given word
 	- If nobody guess the word in 60 seconds, you lost points.
 	- If someone guess the word, he gets 10 points and you also get 5 points.
+### Game End
+- Either 60 seconds have passed, or if someone get the right answer within 60 seconds, the game ends.
+
 ----------------------------------------------------------------------------
 ## Notice
 Someone who wants to test this app can do it by opening two browsers(nomal, secretmode)!
