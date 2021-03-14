@@ -30,7 +30,7 @@ Realtime Drawing Game built with SocketIO, Gulp, NodeJS
 - Press <Get Ready!> to start
 - If all of players are ready, game would start.(Temporally if more than 2 players are ready, game starts)
 ### - Game rules
-When game starts, each player get the role(painter or guesser)
+When game starts, each player gets the role(**Painter** or **Guesser**)
 
     Guesser
     - Guesser can see what painter is drawing
